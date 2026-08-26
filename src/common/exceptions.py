@@ -1,5 +1,9 @@
 class CollectionError(Exception):
     """Base exception for data collection errors."""
+    
+
+class InputFileError(CollectionError):
+    """Raised when an input file is missing or invalid."""
 
 
 class RequestError(CollectionError):
