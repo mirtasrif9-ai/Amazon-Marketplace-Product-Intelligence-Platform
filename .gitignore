@@ -25,7 +25,7 @@ data/evidence/
 logs/
 
 # Model artifacts
-#models/
+
 
 # OS files
 .DS_Store
