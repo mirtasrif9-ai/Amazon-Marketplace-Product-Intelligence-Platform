@@ -1,6 +1,8 @@
 class CollectionError(Exception):
     """Base exception for data collection errors."""
     
+class AmazonTemporaryError(CollectionError):
+    """Raised when Amazon returns a temporary/server error."""
 
 class InputFileError(CollectionError):
     """Raised when an input file is missing or invalid."""
@@ -20,3 +22,4 @@ class ParsingError(CollectionError):
 
 class ValidationError(CollectionError):
     """Raised when collected data fails validation."""
+

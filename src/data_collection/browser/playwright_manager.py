@@ -24,7 +24,15 @@ class PlaywrightManager:
         self._context: BrowserContext | None = None
 
     def start(self) -> Page:
-        """Start Chromium and return a new page."""
+        """Start Chromium and create a new page."""
+
+        if self._context is not None:
+            logger.info("Playwright browser is already running.")
+
+            page = self._context.new_page()
+            page.set_default_timeout(REQUEST_TIMEOUT * 1000)
+
+            return page
 
         logger.info(
             "Starting Playwright browser. headless=%s",
@@ -52,9 +60,12 @@ class PlaywrightManager:
             logger.exception(
                 "Failed to start Playwright browser."
             )
+
             self.close()
+
             raise
 
+        
     def close(self) -> None:
         """Close browser resources safely."""
 

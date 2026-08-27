@@ -30,3 +30,8 @@ logs/
 # OS files
 .DS_Store
 Thumbs.db
+
+*.png
+
+amazon_debug.png
+amazon_debug.html

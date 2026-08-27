@@ -12,4 +12,6 @@ class Product:
     price: float
     image: str
     review_count: int
+    average_rating: float
+    video_url: str
     reviews: list[Review] = field(default_factory=list)
