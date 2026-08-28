@@ -62,7 +62,7 @@ class AmazonProductCollector(BaseProductCollector):
 
         try:
             self.page.goto(self.BASE_URL)
-            time.sleep(5)
+            time.sleep(1)
             response = self.page.goto(
                 url,
                 wait_until="domcontentloaded",
@@ -211,9 +211,12 @@ class AmazonProductCollector(BaseProductCollector):
         title = self._extract_title()
         brand = self._extract_brand()
         price = self._extract_price()
+        image = self._extract_image()
+
         review_count = self._extract_review_count()
+        description = self._extract_description()
         average_rating = self._extract_average_rating()
-        video_url = self._extract_video_url()
+        video_url = self.get_clean_video_url()
         reviews = self._extract_reviews()
 
         logger.info(
@@ -236,10 +239,10 @@ class AmazonProductCollector(BaseProductCollector):
         return Product(
             asin=asin,
             title=title,
-            description="",
+            description=description,
             brand=brand,
             price=price,
-            image="",
+            image=image,
             review_count=review_count,
             average_rating=average_rating,
             video_url=video_url,
@@ -391,6 +394,7 @@ class AmazonProductCollector(BaseProductCollector):
         selectors = [
             "#productDescription",
             "#feature-bullets",
+            "#a-unordered-list"
         ]
 
         for selector in selectors:
@@ -492,57 +496,66 @@ class AmazonProductCollector(BaseProductCollector):
 
 
     def _extract_video_url(self) -> str:
-        """Extract the first available product video URL."""
+            """
+            Extract real media URLs (.mp4 or .m3u8), bypassing dynamic 'blob:' references.
+            Uses embedded JSON state parsing and dynamic DOM scrolling.
+            """
+            # Approach A: Parse embedded JSON configs inside <script> tags
+            try:
+                content = self.page.content()
+                # Capture .mp4 or .m3u8 URLs while handling JSON-escaped slashes (\/)
+                pattern = r'https?:\\?/\\?/[^"\'\s<>]+?\.(?:mp4|m3u8)(?:\?[^"\'\s<>]*)?'
+                matches = re.findall(pattern, content)
 
-        selectors = [
-            "#videoBlock video",
-            "#va-related-video video",
-            "video",
-        ]
+                for raw_url in matches:
+                    clean_url = raw_url.replace('\\/', '/')
+                    if not clean_url.startswith("blob:"):
+                        logger.info("Product video URL extracted via script parsing.")
+                        return clean_url
+            except Exception as exc:
+                logger.warning("Script parsing for video URL failed: %s", exc)
 
-        for selector in selectors:
-            videos = self.page.locator(selector)
+            # Approach B: Scroll to video containers to lazy-load elements
+            try:
+                for video_container in ["#videoBlock", "#vse-video-container", "#video-block_feature_div"]:
+                    locator = self.page.locator(video_container)
+                    if locator.count() > 0:
+                        locator.first.scroll_into_view_if_needed()
+                        self.page.wait_for_timeout(1500)
 
-            count = videos.count()
+                video_elements = self.page.locator("video")
+                count = video_elements.count()
 
-            if count == 0:
-                continue
+                for index in range(count):
+                    video = video_elements.nth(index)
+                    
+                    # Check for direct source attributes
+                    for attr in ["src", "data-video-url", "data-src"]:
+                        video_url = video.get_attribute(attr)
+                        if video_url and not video_url.startswith("blob:"):
+                            logger.info("Product video URL extracted from DOM attribute: %s", attr)
+                            return video_url.strip()
 
-            for index in range(count):
-                video = videos.nth(index)
+                    # Check nested <source> tags
+                    source = video.locator("source")
+                    if source.count() > 0:
+                        source_url = source.first.get_attribute("src")
+                        if source_url and not source_url.startswith("blob:"):
+                            logger.info("Product video URL extracted from source tag.")
+                            return source_url.strip()
+            except Exception as exc:
+                logger.warning("DOM inspection for video URL failed: %s", exc)
 
-                video_url = (
-                    video.get_attribute("src")
-                    or video.get_attribute("data-video-url")
-                    or video.get_attribute("data-src")
-                )
-
-                if video_url:
-                    logger.info(
-                        "Product video URL extracted."
-                    )
-
-                    return video_url.strip()
-
-                # Sometimes the URL is stored in a <source>.
-                source = video.locator("source")
-
-                if source.count() > 0:
-                    source_url = source.first.get_attribute("src")
-
-                    if source_url:
-                        logger.info(
-                            "Product video URL extracted from source."
-                        )
-
-                        return source_url.strip()
-
-        logger.info(
-            "No product video found."
-        )
-
-        return ""
-
+            logger.info("No valid non-blob product video found.")
+            return "" 
+        
+    def get_clean_video_url(self) -> str:
+            raw_text = self._extract_video_url()
+            # Find all URLs starting with http/https, excluding quotes and HTML entities
+            urls = re.findall(r'https?://[^\s"&]+', raw_text)
+            
+            # Returns the last URL if matches are found, otherwise returns the raw text or empty string
+            return urls[-1] if urls else raw_text
 
     def _extract_reviews(self) -> list[Review]:
         """Extract customer reviews from the current product page."""
@@ -560,8 +573,8 @@ class AmazonProductCollector(BaseProductCollector):
             count,
         )
 
-        # For initial testing, extract only the first 5 reviews.
-        max_reviews = min(count, 5)
+        # For initial testing, extract only the first 8 reviews.
+        max_reviews = min(count, 8)
 
         for index in range(max_reviews):
             card = review_cards.nth(index)

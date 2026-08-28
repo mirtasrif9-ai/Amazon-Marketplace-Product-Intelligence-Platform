@@ -52,7 +52,7 @@ class AmazonSearchCollector(BaseSearchCollector):
 
         try:
             self.page.goto(self.BASE_URL)
-            time.sleep(5)
+            time.sleep(2)
             response = self.page.goto(
                 search_url,
                 wait_until="domcontentloaded",
