@@ -46,7 +46,24 @@ class PlaywrightManager:
                 headless=self.headless,
             )
 
+            #self._context = self._browser.new_context()
             self._context = self._browser.new_context()
+            # Place this right after initializing self._context in your start() method
+            self._context.add_cookies([
+                {
+                    "name": "lc-main",
+                    "value": "en_US",
+                    "domain": ".amazon.com",
+                    "path": "/"
+                },
+                {
+                    "name": "i18n-prefs",
+                    "value": "USD",
+                    "domain": ".amazon.com",
+                    "path": "/"
+                }
+            ])
+       
 
             page = self._context.new_page()
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import time
+import re
 
 from urllib.parse import parse_qs, quote_plus, urljoin, urlparse
 
@@ -98,7 +99,7 @@ class AmazonSearchCollector(BaseSearchCollector):
 
         self._validate_response(status, title)
 
-        return self._extract_products()
+        return self._extract_products(keyword)
 
     @staticmethod
     def _build_search_url(keyword: str) -> str:
@@ -153,7 +154,10 @@ class AmazonSearchCollector(BaseSearchCollector):
                 "Amazon returned an error page."
             )
 
-    def _extract_products(self) -> list[ProductReference]:
+    def _extract_products(
+        self,
+        keyword: str,
+    ) -> list[ProductReference]:
         """Extract product references from the current search page."""
 
         products: list[ProductReference] = []
@@ -171,12 +175,18 @@ class AmazonSearchCollector(BaseSearchCollector):
 
         if count == 0:
             logger.warning(
-                "No Amazon product cards found on search page."
+                "No Amazon product cards found on search page: "
+                "keyword=%s",
+                keyword,
             )
             return products
 
         for index in range(count):
             card = product_cards.nth(index)
+
+            # -------------------------
+            # ASIN
+            # -------------------------
 
             asin = card.get_attribute("data-asin")
 
@@ -214,7 +224,7 @@ class AmazonSearchCollector(BaseSearchCollector):
             # -------------------------
 
             link_locator = card.locator(
-                'a:has(h2)'
+                "a:has(h2)"
             )
 
             if link_locator.count() == 0:
@@ -236,24 +246,38 @@ class AmazonSearchCollector(BaseSearchCollector):
             product_url = self._build_product_url(href)
 
             # -------------------------
-            # Product reference
+            # Price
             # -------------------------
 
+            price = self._extract_price(card, asin)
+
+            # -------------------------
+            # Product reference
+            # -------------------------
+            product_number = 1
             product = ProductReference(
-                asin=asin,
+                product_number=product_number,
+                asin=asin.strip(),
+                search_keyword=keyword,
                 title=title,
                 url=product_url,
+                price=price,
             )
 
             products.append(product)
 
             logger.info(
-                "Product reference collected: asin=%s",
+                "Product reference collected: "
+                "keyword=%s asin=%s price=%.2f",
+                keyword,
                 asin,
+                price,
             )
 
         logger.info(
-            "Amazon product references extracted: %d",
+            "Amazon product references extracted: "
+            "keyword=%s count=%d",
+            keyword,
             len(products),
         )
 
@@ -279,3 +303,51 @@ class AmazonSearchCollector(BaseSearchCollector):
                 return urljoin(self.BASE_URL, nested_url)
 
         return absolute_url
+
+
+
+
+    def _extract_price(
+        self,
+        card,
+        asin: str,
+    ) -> float:
+        """Extract product price from a search result card."""
+
+        # 1. Primary Attempt: Target explicit price locator
+        try:
+            price_locator = card.locator(".a-price .a-offscreen").first
+
+            if price_locator.count() > 0:
+                price_text = price_locator.inner_text().strip()
+                cleaned_price = (
+                    price_text
+                    .replace("$", "")
+                    .replace(",", "")
+                    .strip()
+                )
+                price = float(cleaned_price)
+                if price > 0.0:
+                    return price
+        except Exception as e:
+            logger.debug("Primary price extraction failed: asin=%s, error=%s", asin, e)
+
+        # 2. Fallback Attempt: Extract first numeric price pattern from card text
+        try:
+            card_text = card.inner_text()
+            
+            # Matches patterns like $25.71 or $1,250.00 and extracts just the numbers/decimal
+            match = re.search(r'\$\s*([\d,]+(?:\.\d{2})?)', card_text)
+            
+            if match:
+                fallback_price_str = match.group(1).replace(",", "")
+                fallback_price = float(fallback_price_str)
+                if fallback_price > 0.0:
+                    logger.info("Extracted price via fallback regex: asin=%s, price=%s", asin, fallback_price)
+                    return fallback_price
+        except Exception as e:
+            logger.debug("Fallback price extraction failed: asin=%s, error=%s", asin, e)
+
+        # 3. Return 0.0 if both methods fail
+        logger.warning("Could not extract price: asin=%s", asin)
+        return 0.0

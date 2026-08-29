@@ -4,8 +4,6 @@ import logging
 import time
 import re
 
-from urllib.parse import quote_plus
-
 from playwright.sync_api import (
     Page,
     TimeoutError as PlaywrightTimeoutError,
@@ -20,6 +18,9 @@ from src.common.exceptions import (
 from src.data_collection.collectors.base import BaseProductCollector
 from src.data_collection.models.product import Product
 from src.data_collection.models.review import Review
+from src.data_collection.models.product_reference import (
+    ProductReference,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -35,64 +36,59 @@ class AmazonProductCollector(BaseProductCollector):
 
     def collect(
         self,
-        url: str,
-        search_keyword: str | None = None,
+        reference: ProductReference,
     ) -> Product:
         """
-        Collect product information from a single Amazon product URL.
+        Collect detailed product information using a product reference.
 
-        If search_keyword is provided, the same browser page first
-        visits the Amazon search page and then navigates to the
-        requested product.
+        ASIN, title, price, and URL come from the search collector.
+        Only additional product details are extracted from the product page.
         """
 
         logger.info(
-            "Starting Amazon product collection: url=%s",
-            url,
+            "Starting Amazon product collection: "
+            "asin=%s keyword=%s url=%s",
+            reference.asin,
+            reference.search_keyword,
+            reference.url,
         )
-
-        # ---------------------------------------------------------
-        # Step 1: Optionally open Amazon search page first
-        # ---------------------------------------------------------
-
-        
-        # ---------------------------------------------------------
-        # Step 2: Open product page
-        # ---------------------------------------------------------
 
         try:
             self.page.goto(self.BASE_URL)
+
             time.sleep(1)
+
             response = self.page.goto(
-                url,
+                reference.url,
                 wait_until="domcontentloaded",
                 timeout=30_000,
             )
 
         except PlaywrightTimeoutError as exc:
             logger.exception(
-                "Amazon product request timed out: url=%s",
-                url,
+                "Amazon product request timed out: asin=%s",
+                reference.asin,
             )
 
             raise RequestError(
-                f"Amazon product request timed out: {url}"
+                f"Amazon product request timed out: {reference.url}"
             ) from exc
 
         except Exception as exc:
             logger.exception(
-                "Amazon product request failed: url=%s",
-                url,
+                "Amazon product request failed: asin=%s",
+                reference.asin,
             )
 
             raise RequestError(
-                f"Amazon product request failed: {url}"
+                f"Amazon product request failed: {reference.url}"
             ) from exc
 
         status = response.status if response else None
 
         logger.info(
-            "Amazon product response status: %s",
+            "Amazon product response status: asin=%s status=%s",
+            reference.asin,
             status,
         )
 
@@ -108,23 +104,11 @@ class AmazonProductCollector(BaseProductCollector):
             title,
         )
 
-        # ---------------------------------------------------------
-        # Step 3: Validate response
-        # ---------------------------------------------------------
-
         self._validate_response(status, title)
-
-        # ---------------------------------------------------------
-        # Step 4: Make sure this is actually a product page
-        # ---------------------------------------------------------
 
         self._validate_product_page()
 
-        # ---------------------------------------------------------
-        # Step 5: Extract product
-        # ---------------------------------------------------------
-
-        return self._extract_product()
+        return self._extract_product(reference)
 
 
 
@@ -204,32 +188,29 @@ class AmazonProductCollector(BaseProductCollector):
             "Amazon product page validated successfully."
         )
 
-    def _extract_product(self) -> Product:
-        """Extract product information from the current page."""
+    def _extract_product(
+        self,
+        reference: ProductReference,
+    ) -> Product:
+        """Extract additional product information."""
 
-        asin = self._extract_asin()
-        title = self._extract_title()
+        description = self._extract_description()
         brand = self._extract_brand()
-        price = self._extract_price()
         image = self._extract_image()
 
         review_count = self._extract_review_count()
-        description = self._extract_description()
         average_rating = self._extract_average_rating()
         video_url = self.get_clean_video_url()
         reviews = self._extract_reviews()
 
         logger.info(
-            "Product identity extracted: asin=%s",
-            asin,
-        )
-
-        logger.info(
             "Product details extracted: "
-            "brand=%s price=%s review_count=%s "
-            "average_rating=%s video=%s reviews=%s",
+            "product_number=%s asin=%s brand=%s "
+            "review_count=%s average_rating=%s "
+            "video=%s reviews=%s",
+            reference.product_number,
+            reference.asin,
             brand,
-            price,
             review_count,
             average_rating,
             bool(video_url),
@@ -237,11 +218,14 @@ class AmazonProductCollector(BaseProductCollector):
         )
 
         return Product(
-            asin=asin,
-            title=title,
+            product_number=reference.product_number,
+            search_keyword=reference.search_keyword,
+            asin=reference.asin,
+            title=reference.title,
+            product_url=reference.url,
+            price=reference.price,
             description=description,
             brand=brand,
-            price=price,
             image=image,
             review_count=review_count,
             average_rating=average_rating,
@@ -249,47 +233,6 @@ class AmazonProductCollector(BaseProductCollector):
             reviews=reviews,
         )
 
-    def _extract_asin(self) -> str:
-        """Extract ASIN from the product page."""
-
-        asin = self.page.locator(
-            "#ASIN"
-        ).get_attribute("value")
-
-        if asin:
-            return asin.strip()
-
-        asin = self.page.locator(
-            '[name="ASIN"]'
-        ).get_attribute("value")
-
-        if asin:
-            return asin.strip()
-
-        raise ParsingError(
-            "Could not extract ASIN from Amazon product page."
-        )
-
-    def _extract_title(self) -> str:
-        """Extract product title."""
-
-        title_locator = self.page.locator(
-            "#productTitle"
-        )
-
-        if title_locator.count() == 0:
-            raise ParsingError(
-                "Could not find product title."
-            )
-
-        title = title_locator.first.inner_text().strip()
-
-        if not title:
-            raise ParsingError(
-                "Product title is empty."
-            )
-
-        return title
 
     def _extract_brand(self) -> str:
         """Extract product brand."""
@@ -319,50 +262,7 @@ class AmazonProductCollector(BaseProductCollector):
 
         return ""
 
-    def _extract_price(self) -> float:
-        """Extract product price."""
 
-        selectors = [
-            "#corePriceDisplay_desktop_feature_div .a-offscreen",
-            "#corePriceDisplay_mobile_feature_div .a-offscreen",
-            ".a-price .a-offscreen",
-            "#priceblock_ourprice",
-            "#priceblock_dealprice",
-        ]
-
-        for selector in selectors:
-            locator = self.page.locator(selector)
-
-            if locator.count() == 0:
-                continue
-
-            price_text = locator.first.inner_text().strip()
-
-            if not price_text:
-                continue
-
-            try:
-                # Example:
-                # "$15.99"
-                # "$29.99"
-                cleaned_price = (
-                    price_text
-                    .replace("$", "")
-                    .replace(",", "")
-                    .strip()
-                )
-
-                return float(cleaned_price)
-
-            except ValueError:
-                logger.warning(
-                    "Could not parse product price: %s",
-                    price_text,
-                )
-
-        logger.warning("Could not extract product price.")
-
-        return 0.0
 
     def _extract_image(self) -> str:
         """Extract the main product image URL."""
