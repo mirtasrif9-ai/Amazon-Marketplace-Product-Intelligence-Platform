@@ -18,8 +18,8 @@ env/
 .vscode/
 
 # Data
-data/raw/
-data/evidence/
+#data/raw/
+#data/evidence/
 
 # Logs
 logs/
@@ -33,5 +33,3 @@ Thumbs.db
 
 *.png
 
-amazon_debug.png
-amazon_debug.html
