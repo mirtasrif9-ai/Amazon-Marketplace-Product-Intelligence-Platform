@@ -1,0 +1,17 @@
+{
+    "model_name": "distilbert-base-uncased",
+    "model_type": "DistilBERT",
+    "task": "3-class sentiment classification",
+    "classes": [
+        "negative",
+        "neutral",
+        "positive"
+    ],
+    "class_weighted": true,
+    "threshold_optimized": true,
+    "threshold_metric": "validation_macro_f1",
+    "validation_macro_f1": 0.7669861165479603,
+    "test_accuracy": 0.9119412941961308,
+    "test_macro_f1": 0.7389128604996014,
+    "test_weighted_f1": 0.9154610774594899
+}

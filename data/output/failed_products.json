@@ -1,0 +1,51 @@
+[
+    {
+        "product_number": 3,
+        "asin": "B0H9LHWBDK",
+        "title": "Wireless Earbuds, 2026 Bluetooth 5.4 Headphones Bass Stereo Ear Buds with Noise Cancelling Mic, LED Display in Ear Earphones 50H Playtime Ear Buds, IP7 Waterproof for Laptop Pad Phones Soft Black",
+        "url": "https://www.amazon.com/Bluetooth-Headphones-Cancelling-Earphones-Waterproof/dp/B0H9LHWBDK/ref=sr_1_3?dib=eyJ2IjoiMSJ9.uq0W0qFL4zBzDYGXQCvQ6rqgbhlTsNnQiDLaQkidcCwZef-urLV5rPLR1geRFQLX421DtMvqQCwqhKrFZrgnEtM_JzJ_QJZ5mEYUMvWzUGW0rftsiR5Hz_jmXBERcIMXJOw2HLvyozWufS0wEKNDGu-w8s_OZJqzY-zDxjkJV2raZ5jeN2HagL25FSNUYGeXEFIEMotxph8ZnNjFp5UjCLrLk_2rQiQGHSxG-fC69iA.4uCnTjXSltKt7CGajaTtREgb-ByNdwOS_pwnCV3Zdf4&dib_tag=se&keywords=wireless+earbuds&qid=1787899351&sr=8-3",
+        "error": "Locator.get_attribute: Error: strict mode violation: locator(\"#ASIN\") resolved to 2 elements:\n    1) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0H9LHWBDK\"/> aka locator(\"#a-accordion-auto-4 #ASIN\")\n    2) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0H9LHWBDK\"/> aka locator(\"form\").filter(has_text=\"Add to List Added to Unable\").locator(\"#ASIN\")\n\nCall log:\n  - waiting for locator(\"#ASIN\")\n"
+    },
+    {
+        "product_number": 4,
+        "asin": "B0HBWW3958",
+        "title": "Wireless Earbuds, Bluetooth 5.3 Headphones HiFi Stereo 50H Playback LED Digital Display Ear Buds with ENC Noise Canceling Headset, IPX7 Waterproof Earphones for Gym/Running/Work(Black)",
+        "url": "https://www.amazon.com/Fhumsh-Bluetooth-Headphones-Canceling-Waterproof/dp/B0HBWW3958/ref=sr_1_4?dib=eyJ2IjoiMSJ9.uq0W0qFL4zBzDYGXQCvQ6rqgbhlTsNnQiDLaQkidcCwZef-urLV5rPLR1geRFQLX421DtMvqQCwqhKrFZrgnEtM_JzJ_QJZ5mEYUMvWzUGW0rftsiR5Hz_jmXBERcIMXJOw2HLvyozWufS0wEKNDGu-w8s_OZJqzY-zDxjkJV2raZ5jeN2HagL25FSNUYGeXEFIEMotxph8ZnNjFp5UjCLrLk_2rQiQGHSxG-fC69iA.4uCnTjXSltKt7CGajaTtREgb-ByNdwOS_pwnCV3Zdf4&dib_tag=se&keywords=wireless+earbuds&qid=1787899351&sr=8-4",
+        "error": "Locator.get_attribute: Error: strict mode violation: locator(\"#ASIN\") resolved to 2 elements:\n    1) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0HBWW3958\"/> aka locator(\"#a-accordion-auto-4 #ASIN\")\n    2) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0HBWW3958\"/> aka locator(\"form\").filter(has_text=\"Add to List Added to Unable\").locator(\"#ASIN\")\n\nCall log:\n  - waiting for locator(\"#ASIN\")\n"
+    },
+    {
+        "product_number": 5,
+        "asin": "B0H7R1LD7B",
+        "title": "HAOYUYAN Wireless Earbuds, Sports Bluetooth Headphones, 80Hrs Playtime Ear Buds with LED Power Display, Noise Canceling Headset, IPX7 Waterproof Earphones for Workout/Running（Black）",
+        "url": "https://www.amazon.com/HAOYUYAN-Bluetooth-Headphones-Waterproof-Running%EF%BC%88Black%EF%BC%89/dp/B0H7R1LD7B/ref=sr_1_5?dib=eyJ2IjoiMSJ9.uq0W0qFL4zBzDYGXQCvQ6rqgbhlTsNnQiDLaQkidcCwZef-urLV5rPLR1geRFQLX421DtMvqQCwqhKrFZrgnEtM_JzJ_QJZ5mEYUMvWzUGW0rftsiR5Hz_jmXBERcIMXJOw2HLvyozWufS0wEKNDGu-w8s_OZJqzY-zDxjkJV2raZ5jeN2HagL25FSNUYGeXEFIEMotxph8ZnNjFp5UjCLrLk_2rQiQGHSxG-fC69iA.4uCnTjXSltKt7CGajaTtREgb-ByNdwOS_pwnCV3Zdf4&dib_tag=se&keywords=wireless+earbuds&qid=1787899351&sr=8-5",
+        "error": "Locator.get_attribute: Error: strict mode violation: locator(\"#ASIN\") resolved to 2 elements:\n    1) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0H7R1LD7B\"/> aka locator(\"#a-accordion-auto-4 #ASIN\")\n    2) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0H7R1LD7B\"/> aka locator(\"form\").filter(has_text=\"Add to List Added to Unable\").locator(\"#ASIN\")\n\nCall log:\n  - waiting for locator(\"#ASIN\")\n"
+    },
+    {
+        "product_number": 6,
+        "asin": "B0G7H6K1WN",
+        "title": "Wireless Earbuds,Bluetooth 5.4 Ear buds,Sport Headphones with Earhooks | IPX7 Waterproof Bluetooth Headphones,80H Playtime Earbuds,Noise Cancelling Mic for Earphones Running & Workout-Black",
+        "url": "https://www.amazon.com/Wireless-Earbuds-Bluetooth-Headphones-Earhooks/dp/B0G7H6K1WN/ref=sr_1_6?dib=eyJ2IjoiMSJ9.uq0W0qFL4zBzDYGXQCvQ6rqgbhlTsNnQiDLaQkidcCwZef-urLV5rPLR1geRFQLX421DtMvqQCwqhKrFZrgnEtM_JzJ_QJZ5mEYUMvWzUGW0rftsiR5Hz_jmXBERcIMXJOw2HLvyozWufS0wEKNDGu-w8s_OZJqzY-zDxjkJV2raZ5jeN2HagL25FSNUYGeXEFIEMotxph8ZnNjFp5UjCLrLk_2rQiQGHSxG-fC69iA.4uCnTjXSltKt7CGajaTtREgb-ByNdwOS_pwnCV3Zdf4&dib_tag=se&keywords=wireless+earbuds&qid=1787899351&sr=8-6",
+        "error": "Locator.get_attribute: Error: strict mode violation: locator(\"#ASIN\") resolved to 2 elements:\n    1) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0G7H6K1WN\"/> aka locator(\"#a-accordion-auto-4 #ASIN\")\n    2) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0G7H6K1WN\"/> aka locator(\"form\").filter(has_text=\"Add to List Added to Unable\").locator(\"#ASIN\")\n\nCall log:\n  - waiting for locator(\"#ASIN\")\n"
+    },
+    {
+        "product_number": 8,
+        "asin": "B0H5W2YR99",
+        "title": "HAOYUYAN Wireless Earbuds, Sports Bluetooth Headphones, 80Hrs Playtime Ear Buds with LED Power Display, Noise Canceling Headset, IPX7 Waterproof Earphones for Workout/Running（Rose Gold）",
+        "url": "https://www.amazon.com/HAOYUYAN-Bluetooth-Headphones-Waterproof-Running%EF%BC%88Rose/dp/B0H5W2YR99/ref=sr_1_8?dib=eyJ2IjoiMSJ9.uq0W0qFL4zBzDYGXQCvQ6rqgbhlTsNnQiDLaQkidcCwZef-urLV5rPLR1geRFQLX421DtMvqQCwqhKrFZrgnEtM_JzJ_QJZ5mEYUMvWzUGW0rftsiR5Hz_jmXBERcIMXJOw2HLvyozWufS0wEKNDGu-w8s_OZJqzY-zDxjkJV2raZ5jeN2HagL25FSNUYGeXEFIEMotxph8ZnNjFp5UjCLrLk_2rQiQGHSxG-fC69iA.4uCnTjXSltKt7CGajaTtREgb-ByNdwOS_pwnCV3Zdf4&dib_tag=se&keywords=wireless+earbuds&qid=1787899351&sr=8-8",
+        "error": "Locator.get_attribute: Error: strict mode violation: locator(\"#ASIN\") resolved to 2 elements:\n    1) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0H5W2YR99\"/> aka locator(\"#a-accordion-auto-4 #ASIN\")\n    2) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0H5W2YR99\"/> aka locator(\"form\").filter(has_text=\"Add to List Added to Unable\").locator(\"#ASIN\")\n\nCall log:\n  - waiting for locator(\"#ASIN\")\n"
+    },
+    {
+        "product_number": 9,
+        "asin": "B0HBVXBZPZ",
+        "title": "Wireless Earbuds, Smart Touchscreen Ear Buds, ANC Headphones, Bluetooth 5.4 | 48H Playtime, ENC Clear Calls, 13mm Drivers, 5 EQ Modes, Hi-Fi Deep Bass, for iPhone/Android/Pad Onyx",
+        "url": "https://www.amazon.com/Wireless-Earbuds-Touchscreen-Headphones-Bluetooth/dp/B0HBVXBZPZ/ref=sr_1_9?dib=eyJ2IjoiMSJ9.uq0W0qFL4zBzDYGXQCvQ6rqgbhlTsNnQiDLaQkidcCwZef-urLV5rPLR1geRFQLX421DtMvqQCwqhKrFZrgnEtM_JzJ_QJZ5mEYUMvWzUGW0rftsiR5Hz_jmXBERcIMXJOw2HLvyozWufS0wEKNDGu-w8s_OZJqzY-zDxjkJV2raZ5jeN2HagL25FSNUYGeXEFIEMotxph8ZnNjFp5UjCLrLk_2rQiQGHSxG-fC69iA.4uCnTjXSltKt7CGajaTtREgb-ByNdwOS_pwnCV3Zdf4&dib_tag=se&keywords=wireless+earbuds&qid=1787899351&sr=8-9",
+        "error": "Locator.get_attribute: Error: strict mode violation: locator(\"#ASIN\") resolved to 2 elements:\n    1) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0HBVXBZPZ\"/> aka locator(\"#a-accordion-auto-4 #ASIN\")\n    2) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0HBVXBZPZ\"/> aka locator(\"form\").filter(has_text=\"Add to List Added to Unable\").locator(\"#ASIN\")\n\nCall log:\n  - waiting for locator(\"#ASIN\")\n"
+    },
+    {
+        "product_number": 10,
+        "asin": "B0HBW8PTYN",
+        "title": "Wireless Earbuds, Bluetooth 5.4 Headphones HIFI Stereo/Crystal clear, White | Noise Cancelling Mic Ear buds with 50H Playback, LED Digital Display, IPX7 Waterproof Earphones for Office/Running/Workout",
+        "url": "https://www.amazon.com/Wireless-Earbuds-Bluetooth-Headphones-Crystal/dp/B0HBW8PTYN/ref=sr_1_10?dib=eyJ2IjoiMSJ9.uq0W0qFL4zBzDYGXQCvQ6rqgbhlTsNnQiDLaQkidcCwZef-urLV5rPLR1geRFQLX421DtMvqQCwqhKrFZrgnEtM_JzJ_QJZ5mEYUMvWzUGW0rftsiR5Hz_jmXBERcIMXJOw2HLvyozWufS0wEKNDGu-w8s_OZJqzY-zDxjkJV2raZ5jeN2HagL25FSNUYGeXEFIEMotxph8ZnNjFp5UjCLrLk_2rQiQGHSxG-fC69iA.4uCnTjXSltKt7CGajaTtREgb-ByNdwOS_pwnCV3Zdf4&dib_tag=se&keywords=wireless+earbuds&qid=1787899351&sr=8-10",
+        "error": "Locator.get_attribute: Error: strict mode violation: locator(\"#ASIN\") resolved to 2 elements:\n    1) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0HBW8PTYN\"/> aka locator(\"#a-accordion-auto-4 #ASIN\")\n    2) <input id=\"ASIN\" name=\"ASIN\" type=\"hidden\" value=\"B0HBW8PTYN\"/> aka locator(\"form\").filter(has_text=\"Add to List Added to Unable\").locator(\"#ASIN\")\n\nCall log:\n  - waiting for locator(\"#ASIN\")\n"
+    }
+]
