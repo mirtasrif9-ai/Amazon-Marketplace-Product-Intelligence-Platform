@@ -1,0 +1,54 @@
+{
+    "feature": "price_tier_classification",
+    "model_type": "hybrid_text_numeric_categorical_logistic_regression",
+    "target": "price_tier",
+    "target_classes": [
+        "budget",
+        "mid_range",
+        "premium"
+    ],
+    "dataset_rows": 946,
+    "train_rows": 756,
+    "test_rows": 190,
+    "model_features": {
+        "text_features": [
+            "title",
+            "description"
+        ],
+        "numeric_features": [
+            "review_count",
+            "average_rating",
+            "review_number_collected",
+            "title_length",
+            "description_length"
+        ],
+        "categorical_features": [
+            "brand"
+        ]
+    },
+    "prohibited_features": [
+        "price",
+        "price_tier",
+        "search_keyword"
+    ],
+    "text_representation": "title repeated twice + description",
+    "best_hyperparameters": {
+        "classifier__C": 10.0,
+        "preprocessor__text__max_df": 0.9,
+        "preprocessor__text__min_df": 1,
+        "preprocessor__text__ngram_range": [
+            1,
+            1
+        ]
+    },
+    "evaluation": {
+        "primary_metric": "f1_macro",
+        "cv_macro_f1": 0.5475667262657737,
+        "test_accuracy": 0.5157894736842106,
+        "test_precision_macro": 0.5274425995944984,
+        "test_recall_macro": 0.514717826193236,
+        "test_f1_macro": 0.5172652648508348
+    },
+    "random_state": 42,
+    "created_at_utc": "2026-09-02T06:48:37.955539+00:00"
+}
