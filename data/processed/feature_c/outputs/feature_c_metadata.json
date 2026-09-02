@@ -1,0 +1,78 @@
+{
+    "feature": "thumbnail_grouping",
+    "description": "Visual grouping of product thumbnails based purely on image appearance without using site category labels.",
+    "dataset": {
+        "total_products": 946,
+        "unique_asins": 946,
+        "image_manifest": "image_manifest_final.csv"
+    },
+    "image_identity": {
+        "identifier": "asin",
+        "filename_pattern": "{ASIN}.jpg"
+    },
+    "visual_representation": {
+        "model": "CLIP",
+        "model_name": "ViT-B/32",
+        "embedding_dimension": 512,
+        "pretrained": true,
+        "fine_tuned": false
+    },
+    "normalization": {
+        "method": "L2 normalization",
+        "axis": 1
+    },
+    "dimensionality_reduction": {
+        "method": "PCA",
+        "variance_target": 0.95,
+        "variance_retained": 0.9500334858894348,
+        "original_dimensions": 512,
+        "reduced_dimensions": 202
+    },
+    "clustering": {
+        "algorithm": "K-Means",
+        "final_k": 25,
+        "random_state": 42,
+        "n_init": 20,
+        "max_iter": 300
+    },
+    "final_evaluation": {
+        "silhouette_score": 0.18307636678218842,
+        "davies_bouldin_score": 2.099692175533504,
+        "calinski_harabasz_score": 37.514373779296875,
+        "minimum_cluster_size": 13,
+        "maximum_cluster_size": 67,
+        "median_cluster_size": 42.0,
+        "mean_cluster_size": 37.84
+    },
+    "cluster_selection": {
+        "candidate_range": "K=10\u201330",
+        "selected_k": 25,
+        "selection_method": "Combined clustering metrics and visual inspection of representative images.",
+        "visual_inspection_candidates": [
+            20,
+            24,
+            25,
+            28
+        ],
+        "reason": "K=25 provided visually coherent and useful fine-grained visual groups while maintaining reasonable cluster sizes."
+    },
+    "prohibited_clustering_inputs": [
+        "search_keyword",
+        "title",
+        "description",
+        "brand",
+        "price",
+        "price_tier",
+        "site_category"
+    ],
+    "artifacts": {
+        "clip_embeddings": "visual_embeddings_clip_vit_b32.npy",
+        "clip_pca_embeddings": "visual_embeddings_clip_vit_b32_pca.npy",
+        "pca_model": "clip_vit_b32_pca.joblib",
+        "kmeans_model": "kmeans_clip_vit_b32_thumbnail_grouping.joblib",
+        "assignments": "thumbnail_group_assignments.csv",
+        "cluster_summary": "thumbnail_group_summary.csv",
+        "image_manifest": "image_manifest_final.csv"
+    },
+    "created_at_utc": "2026-09-02T11:21:19.382652+00:00"
+}

@@ -36,3 +36,8 @@ Thumbs.db
 *.safetensors
 
 *.joblib
+
+*.jpg
+*.jpeg
+
+*.npy
