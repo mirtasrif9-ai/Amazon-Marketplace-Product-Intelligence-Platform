@@ -8,7 +8,7 @@ class Product:
     """Complete Amazon product information."""
 
     # ---------------------------------------------------------
-    # Information coming from product_references.json
+    # Information coming from product references
     # ---------------------------------------------------------
 
     product_number: int
@@ -34,3 +34,11 @@ class Product:
     # ---------------------------------------------------------
 
     reviews: list[Review] = field(default_factory=list)
+
+    # ---------------------------------------------------------
+    # ML-generated product sentiment summary
+    # Optional because raw products do not contain sentiment
+    # information until batch inference is completed.
+    # ---------------------------------------------------------
+
+    sentiment_summary: dict = field(default_factory=dict)

@@ -24,6 +24,15 @@ from ui.pages.recommendations import (
 
 from ui.pages.sentiment import render_sentiment_page
 
+from ui.pages.thumbnail_groups import (
+    render_thumbnail_groups,
+)
+
+
+from ui.pages.price_tier import (
+    render_price_tier_page,
+)
+
 # ============================================================
 # PROJECT PATHS
 # ============================================================
@@ -33,8 +42,8 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 DATASET_PATH = (
     PROJECT_ROOT
     / "data"
-    / "processed"
-    / "cleaned_products.csv"
+    / "output"
+    / "products_with_sentiment.json"
 )
 
 RECOMMENDATION_MODEL_DIR = (
@@ -270,10 +279,34 @@ def main():
     if page == "Dashboard":
 
         render_dashboard(repository)
-
+        
     elif page == "Product Explorer":
+            try:
+                recommendation_service = load_recommendation_service(
+                    repository
+                )
 
-        render_product_explorer(repository)
+                sentiment_service = load_sentiment_service(
+                    repository
+                )
+
+                thumbnail_service = load_thumbnail_service()
+
+                price_tier_classifier = (
+                    load_price_tier_classifier()
+                )
+
+                render_product_explorer(
+                    repository=repository,
+                    recommendation_service=recommendation_service,
+                    sentiment_service=sentiment_service,
+                    thumbnail_service=thumbnail_service,
+                    price_tier_classifier=price_tier_classifier,
+                )
+
+            except Exception as error:
+                st.error("Failed to load Product Explorer.")
+                st.exception(error)
 
     elif page == "Feature A — Recommendations":
 
@@ -327,23 +360,36 @@ def main():
 
     elif page == "Feature C — Thumbnail Groups":
 
-        st.title(
-            "🖼️ Feature C — Thumbnail Grouping"
-        )
+        try:
 
-        st.info(
-            "Feature C interface will be connected next."
-        )
+            thumbnail_service = (
+                load_thumbnail_service()
+            )
+
+            render_thumbnail_groups(
+                thumbnail_service=thumbnail_service,
+            )
+
+        except Exception as error:
+
+            st.error(
+                "Failed to load thumbnail grouping feature."
+            )
+
+            st.exception(error)
 
     elif page == "Feature D — Price Tier":
+        try:
+            price_tier_classifier = load_price_tier_classifier()
 
-        st.title(
-            "💰 Feature D — Price Tier Classification"
-        )
+            render_price_tier_page(
+                repository=repository,
+                price_tier_classifier=price_tier_classifier,
+            )
 
-        st.info(
-            "Feature D interface will be connected next."
-        )
+        except Exception as error:
+            st.error("Failed to load price tier classification feature.")
+            st.exception(error)
 
 
 if __name__ == "__main__":

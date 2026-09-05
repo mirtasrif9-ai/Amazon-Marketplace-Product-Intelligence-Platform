@@ -11,8 +11,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATASET_PATH = (
     PROJECT_ROOT
     / "data"
-    / "processed"
-    / "cleaned_products.csv"
+    / "output"
+    / "products_with_sentiment.json"
 )
 
 MODEL_DIR = (
